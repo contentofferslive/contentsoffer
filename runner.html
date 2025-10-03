@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Payment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS adapted for black background and mobile-first, no-scroll design */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            /* Black background */
+            background-color: #121212; 
+            color: #E0E0E0; /* Light text for contrast */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Ensure it fills the viewport and is not scrollable */
+            min-height: 100vh; 
+            overflow: hidden; 
+            box-sizing: border-box;
+        }
+        .payment-container {
+            background-color: #1E1E1E; /* Dark gray card background */
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            max-width: 450px;
+            width: 95%; /* Responsive width */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        h1 {
+            color: #00BCD4; /* Cyan accent color */
+            font-size: 1.8em;
+            margin-bottom: 0px;
+            font-weight: 700;
+        }
+        .product-info {
+            font-size: 1em;
+            color: #BBBBBB;
+            margin-bottom: 10px;
+        }
+        .amount-display {
+            font-size: 3.5em;
+            color: #4CAF50; /* Green for amount */
+            font-weight: 700;
+            margin: 0;
+            padding: 10px 0;
+            border-bottom: 1px solid #333333;
+            border-top: 1px solid #333333;
+        }
+        .upi-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        .upi-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 20px;
+            background-color: #333333; /* Darker button base */
+            border: 1px solid #444444;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #E0E0E0;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .upi-button:hover {
+            background-color: #444444;
+            border-color: #00BCD4;
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(0, 188, 212, 0.3);
+        }
+        .upi-button img {
+            width: 28px;
+            height: 28px;
+            margin-right: 15px;
+            object-fit: contain;
+            border-radius: 4px; /* Slight rounding for logos */
+        }
+        .upi-id-note {
+            font-size: 0.8em;
+            color: #777777;
+            margin-top: 5px;
+        }
+
+        /* Mobile adjustments (ensures good fit on small screens) */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .payment-container {
+                padding: 20px 15px;
+            }
+            h1 {
+                font-size: 1.6em;
+            }
+            .amount-display {
+                font-size: 3em;
+            }
+            .upi-button {
+                padding: 12px 10px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="payment-container">
+        <h1>Payment for</h1>
+        <div class="product-info" id="product-display">CONTENT OFFER</div>
+        
+        <div class="amount-display">₹ <span id="payment-amount">249.00</span></div>
+        <div class="upi-id-note">
+            Paying to: vaidikrewatkar691480.rzprxairtel
+        </div>
+
+        <div class="upi-options">
+            <p style="color: #BBBBBB; font-weight: 600; margin-bottom: 5px;">Tap your preferred app to proceed:</p>
+
+            <a href="#" id="gpay-link" class="upi-button">
+                <!-- Using a simple icon for dark theme visibility -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Google_Pay_Logo.svg/50px-Google_Pay_Logo.svg.png" onerror="this.src='https://placehold.co/28x28/333/fff?text=G'" alt="Google Pay Logo">
+                Google Pay
+            </a>
+            
+            <a href="#" id="phonepe-link" class="upi-button">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/PhonePe_Logo.svg/50px-PhonePe_Logo.svg.png" onerror="this.src='https://placehold.co/28x28/333/fff?text=P'" alt="PhonePe Logo">
+                PhonePe
+            </a>
+            
+            <a href="#" id="paytm-link" class="upi-button">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Paytm_Logo.png/50px-Paytm_Logo.png" onerror="this.src='https://placehold.co/28x28/333/fff?text=T'" alt="Paytm Logo">
+                Paytm
+            </a>
+            
+            <a href="#" id="generic-upi-link" class="upi-button">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/UPI-Logo-vector.svg/50px-UPI-Logo-vector.svg.png" onerror="this.src='https://placehold.co/28x28/333/fff?text=U'" alt="UPI Logo">
+                Other UPI App
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // ******************************************************************
+        // *** PAYMENT CONFIGURATION ***
+        // ******************************************************************
+
+        // Your Razorpay UPI ID
+        const YOUR_UPI_ID = 'vaidikrewatkar691480.rzprxairtel'; 
+        // Payment Details
+        const PAYMENT_AMOUNT = '249.00'; 
+        const PAYEE_NAME = 'CONTENT OFFER';
+        const TRANSACTION_NOTE = 'offer';
+        
+        // Use a unique transaction reference
+        const TRANSACTION_REF = 'TRN' + Date.now(); 
+
+        // ******************************************************************
+        // *** UPI LINK CONSTRUCTION FUNCTION ***
+        // ******************************************************************
+
+        function generateUpiUrl() {
+            // Standard UPI Intent URL format
+            const baseUrl = 'upi://pay?';
+            return baseUrl +
+                'pa=' + encodeURIComponent(YOUR_UPI_ID) +      // Payee Address (Your VPA)
+                '&pn=' + encodeURIComponent(PAYEE_NAME) +       // Payee Name (CONTENT OFFER)
+                '&am=' + encodeURIComponent(PAYMENT_AMOUNT) +   // Amount
+                '&cu=' + 'INR' +                                // Currency
+                '&tr=' + encodeURIComponent(TRANSACTION_REF) +  // Transaction Reference (Unique ID)
+                '&tn=' + encodeURIComponent(TRANSACTION_NOTE);  // Transaction Note (offer)
+        }
+
+        // ******************************************************************
+        // *** PAGE INITIALIZATION ***
+        // ******************************************************************
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const upiLink = generateUpiUrl();
+
+            // Set the dynamic content
+            document.getElementById('payment-amount').textContent = PAYMENT_AMOUNT;
+            document.getElementById('product-display').textContent = PAYEE_NAME;
+
+            // Apply the same UPI Intent link to all buttons
+            // The operating system or the specific app will handle the redirection.
+            document.getElementById('gpay-link').href = upiLink;
+            document.getElementById('phonepe-link').href = upiLink;
+            document.getElementById('paytm-link').href = upiLink;
+            document.getElementById('generic-upi-link').href = upiLink;
+        });
+
+    </script>
+
+</body>
+</html>
+
