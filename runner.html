@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Payment</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles to enforce full-screen, no-scroll layout */
+        body {
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden; /* Prevents scrolling */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f7f9fc;
+        }
+        /* Style for the buttons to look professional */
+        .upi-button {
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .upi-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        .upi-button img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-green': '#10b981',
+                        'primary-blue': '#3b82f6',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="p-4 sm:p-6 md:p-8">
+
+    <div class="payment-container bg-white rounded-xl shadow-2xl p-6 sm:p-8 w-full max-w-sm flex flex-col justify-between" 
+         style="max-height: 95vh;">
+        
+        <!-- Header and Amount -->
+        <div class="text-center mb-6">
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-2">
+                Secure Checkout
+            </h1>
+            <p class="text-gray-500 font-medium text-sm">
+                Paying for: <span id="product-name" class="font-semibold text-gray-700">CONTENT OFFER</span>
+            </p>
+        </div>
+
+        <!-- Amount Display -->
+        <div class="text-center py-4 px-3 bg-gray-50 rounded-lg mb-6">
+            <div class="text-5xl font-extrabold text-primary-green">
+                ₹<span id="payment-amount">249.00</span>
+            </div>
+            <p class="text-xs text-gray-400 mt-1">Tap an app below to pay</p>
+        </div>
+        
+        <!-- Payment Options (UPI Buttons) -->
+        <div class="upi-options space-y-3">
+            
+            <!-- Google Pay -->
+            <a href="#" id="gpay-link" class="upi-button flex items-center justify-start bg-white border border-gray-200 p-3 rounded-lg text-gray-800 font-semibold">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Google_Pay_Logo.svg/1200px-Google_Pay_Logo.svg.png" alt="GPay Logo" class="mr-3">
+                Pay with Google Pay
+                <span class="ml-auto text-xl font-bold text-gray-400">&rarr;</span>
+            </a>
+            
+            <!-- PhonePe -->
+            <a href="#" id="phonepe-link" class="upi-button flex items-center justify-start bg-white border border-gray-200 p-3 rounded-lg text-gray-800 font-semibold">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/PhonePe_Logo.svg/1200px-PhonePe_Logo.svg.png" alt="PhonePe Logo" class="mr-3">
+                Pay with PhonePe
+                <span class="ml-auto text-xl font-bold text-gray-400">&rarr;</span>
+            </a>
+            
+            <!-- Paytm -->
+            <a href="#" id="paytm-link" class="upi-button flex items-center justify-start bg-white border border-gray-200 p-3 rounded-lg text-gray-800 font-semibold">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Paytm_Logo.png/1200px-Paytm_Logo.png" alt="Paytm Logo" class="mr-3">
+                Pay with Paytm
+                <span class="ml-auto text-xl font-bold text-gray-400">&rarr;</span>
+            </a>
+            
+            <!-- Other UPI Apps (Generic) -->
+            <a href="#" id="generic-upi-link" class="upi-button flex items-center justify-start bg-primary-blue text-white p-3 rounded-lg font-semibold border-2 border-primary-blue mt-4">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/UPI-Logo-vector.svg/1200px-UPI-Logo-vector.svg.png" alt="UPI Logo" class="mr-3 bg-white p-1 rounded">
+                Other UPI App
+                <span class="ml-auto text-xl font-bold">&rarr;</span>
+            </a>
+
+        </div>
+
+        <!-- Footer/Security Note -->
+        <div class="text-center mt-6">
+            <p class="text-xs text-gray-400">
+                Transaction secured by Razorpay
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // ******************************************************************
+        // *** 1. PAYMENT CONFIGURATION ***
+        // ******************************************************************
+
+        // Your Razorpay UPI ID (VPA)
+        const YOUR_UPI_ID = 'vaidikrewatkar691480.rzp@rxairtel'; 
+        
+        // Transaction Details
+        const PAYMENT_AMOUNT = '249.00'; 
+        const PAYEE_NAME = 'CONTENT OFFER';
+        const TRANSACTION_NOTE = 'offer'; 
+        
+        // Generate a unique transaction reference (for reconciliation)
+        const TRANSACTION_REF = 'TRN' + Date.now(); 
+
+        // ******************************************************************
+        // *** 2. UPI LINK CONSTRUCTION LOGIC ***
+        // ******************************************************************
+
+        function generateUpiUrl() {
+            // Standard UPI Intent URL format
+            const baseUrl = 'upi://pay?';
+            return baseUrl +
+                'pa=' + encodeURIComponent(YOUR_UPI_ID) +       // Payee Address (Your VPA)
+                '&pn=' + encodeURIComponent(PAYEE_NAME) +        // Payee Name
+                '&am=' + encodeURIComponent(PAYMENT_AMOUNT) +    // Amount
+                '&cu=' + 'INR' +                                 // Currency
+                '&tr=' + encodeURIComponent(TRANSACTION_REF) +   // Transaction Reference (Unique ID)
+                '&tn=' + encodeURIComponent(TRANSACTION_NOTE);   // Transaction Note
+        }
+
+        // ******************************************************************
+        // *** 3. PAGE INITIALIZATION ***
+        // ******************************************************************
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const upiLink = generateUpiUrl();
+
+            // Set the dynamic content on the page
+            document.getElementById('payment-amount').textContent = PAYMENT_AMOUNT;
+            document.getElementById('product-name').textContent = PAYEE_NAME;
+
+            // Apply the UPI Intent link to all buttons
+            document.getElementById('gpay-link').href = upiLink;
+            document.getElementById('phonepe-link').href = upiLink;
+            document.getElementById('paytm-link').href = upiLink;
+            document.getElementById('generic-upi-link').href = upiLink;
+        });
+
+    </script>
+
+</body>
+</html>
+
