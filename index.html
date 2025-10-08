@@ -137,7 +137,56 @@
     <i class="fab fa-telegram-plane"></i> 
     BUY NOW - 79₹ ONLY
     </a>
-            
+            <style>
+.buy-now-button {
+    /* Basic Layout & Color */
+    display: inline-flex; /* Use inline-flex for better icon alignment */
+    align-items: center;
+    padding: 15px 40px;
+    background-color: #ff5500; /* Bright orange color */
+    color: white; /* White text */
+    text-decoration: none; /* Remove underline from link */
+    
+    /* Text Styling */
+    font-family: Arial, sans-serif;
+    font-size: 26px; /* Slightly larger text */
+    font-weight: 800; /* Extra bold text */
+    text-align: center;
+    
+    /* Shape and 3D Effect */
+    border-radius: 12px; /* Rounded corners */
+    cursor: pointer;
+    box-shadow: 
+        0 0 10px rgba(255, 85, 0, 0.7), /* Light inner glow */
+        0 5px 0 rgba(190, 40, 0, 1), /* Darker bottom shadow for depth */
+        0 10px 20px rgba(0, 0, 0, 0.5); /* Outer shadow */
+    transition: all 0.2s ease;
+}
+
+/* Telegram Icon Spacing */
+.buy-now-button i {
+    margin-right: 12px; /* Space between icon and text */
+}
+
+/* Hover Effect */
+.buy-now-button:hover {
+    background-color: #ff6620; /* Slightly lighter orange */
+    transform: translateY(-2px); /* Lift button slightly */
+    box-shadow: 
+        0 0 15px rgba(255, 85, 0, 0.9),
+        0 5px 0 rgba(190, 40, 0, 1),
+        0 15px 25px rgba(0, 0, 0, 0.6);
+}
+
+/* Active/Click Effect */
+.buy-now-button:active {
+    transform: translateY(3px); /* Press down effect */
+    box-shadow: 
+        0 0 5px rgba(255, 85, 0, 0.5),
+        0 2px 0 rgba(190, 40, 0, 1); /* Smaller shadow to look 'pressed' */
+}
+</style>
+
             
         </div>
 
