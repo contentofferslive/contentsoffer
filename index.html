@@ -132,6 +132,35 @@
   <a href="https://payments.cashfree.com/forms?code=evilsreffOdndnhdndJ" class="buy-btn">Buy Now – ₹199 Only</a>
 
   <footer>© TRUSTED SINCE 2019 </footer>
+<button id="payBtn">Pay ₹1</button>
 
+<script>
+document.getElementById("payBtn").addEventListener("click", async () => {
+    try {
+        const res = await fetch("https://cashfree-app.vercel.app/api/create-order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                amount: 1,
+                customer_id: "user123",
+                customer_phone: "9999999999",
+                customer_email: "test@example.com"
+            })
+        });
+
+        const data = await res.json();
+        console.log(data);
+
+        if (data.payment_link) {
+            window.location.href = data.payment_link;
+        } else {
+            alert("Payment link not received!");
+        }
+
+    } catch (err) {
+        alert("Error: " + err.message);
+    }
+});
+</script>
 </body>
     </html>
