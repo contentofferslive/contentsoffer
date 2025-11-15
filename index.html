@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pay ₹1 - Cashfree</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #0056d2;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Pay ₹1</h1>
+    <p>Click below to make a payment.</p>
+
+    <button class="btn" id="payBtn">Pay Now</button>
+
+    <script>
+        document.getElementById("payBtn").addEventListener("click", async () => {
+            try {
+                const response = await fetch("https://cashfree-app.vercel.app/api/create-order", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        amount: 1,
+                        customer_id: "user123",
+                        customer_phone: "9999999999",
+                        customer_email: "test@example.com"
+                    })
+                });
+
+                const data = await response.json();
+                console.log(data);
+
+                if (data.payment_link) {
+                    window.location.href = data.payment_link;
+                } else {
+                    alert("Payment link not received.");
+                }
+
+            } catch (error) {
+                alert("Something went wrong: " + error.message);
+            }
+        });
+    </script>
+
+</body>
+</html>
